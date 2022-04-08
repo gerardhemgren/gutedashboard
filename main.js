@@ -38,17 +38,19 @@ tradesRef.where("id", "!=", true)
 let tradeAddBtn = document.getElementById('trade-add-btn').addEventListener('click', () => updateTrade(true))
 let tradeSubBtn = document.getElementById('trade-sub-btn').addEventListener('click', () => updateTrade(false))
 function updateTrade(condition) {
-    let tradeSelection = trades.find(i => i.id == selection)
-    condition == true ? tradeSelection.quant += 1 : tradeSelection.quant -= 1;
-    return tradesRef.doc(selection).update({
-        quant: tradeSelection.quant
-    })
-        .then(function () {
-            console.log("Document successfully updated!");
+    if (selection) {
+        let tradeSelection = trades.find(i => i.id == selection)
+        condition == true ? tradeSelection.quant += 1 : tradeSelection.quant -= 1;
+        return tradesRef.doc(selection).update({
+            quant: tradeSelection.quant
         })
-        .catch(function (error) {
-            console.error("Error updating document: ", error);
-        });
+            .then(function () {
+                console.log("Document successfully updated!");
+            })
+            .catch(function (error) {
+                console.error("Error updating document: ", error);
+            });
+    }
 }
 
 
@@ -142,7 +144,7 @@ function newChart() {
                     padding: {
                         left: 0,
                         right: 0,
-                        top: 0,
+                        top: 20,
                         bottom: 0
                     }
                 },

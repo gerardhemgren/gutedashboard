@@ -14,15 +14,25 @@
 </head>
 
 <body>
-    <div id="itemContainer" class="item-container"></div>
-    <div class="buttonContainer">
-        <button id='trade-add-btn'>▲</button>
-        <button id='trade-sub-btn'>▼</button>
+    <div class="item-control-container">
+        <div>
+            1. Select an item
+            <div id="itemContainer" class="item-container"></div>
+        </div>
+        <div class="buttonContainer">
+            2. Update
+            <div>
+                <button id='trade-add-btn'>▲</button>
+                <button id='trade-sub-btn'>▼</button>
+            </div>
+        </div>
     </div>
     <div class="canvas">
-        <canvas id="chart" width="10" height="2"></canvas>
+        3. Sees the changes
+        <canvas id="chart" width="8" height="2"></canvas>
     </div>
 
     <script type="module" src="main.js"></script>
 </body>
+
 </html>
