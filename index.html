@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>guten trade</title>
+    <title>gute dashboard</title>
     <style>
         body {
-            background-image: url(https://cdn.pixabay.com/photo/2015/10/12/14/59/milky-way-984050_960_720.jpg);
             background-size: cover;
             background-blend-mode: color;
             background-color: rgba(28, 24, 37, 0.925);
@@ -16,8 +15,8 @@
         .item-container {
             display: grid;
             grid-template:
-                'a a a a a a'   100px 
-                'a a a a a a'   100px;
+                'a a a a a a' 100px 
+                'a a a a a a' 100px;
             margin: 10px 15% 0px;
         }
 
@@ -101,8 +100,8 @@
 <body>
     <div id="itemContainer" class="item-container"></div>
     <div class="buttonContainer">
-        <button id='math' onclick="setTrade(true)">▲</button>
-        <button id='math' onclick="setTrade(false)">▼</button>
+        <button id='math' onclick="updateTrade(true)">▲</button>
+        <button id='math' onclick="updateTrade(false)">▼</button>
     </div>
     <div class="canvas">
         <canvas id="chart" width="10" height="2"></canvas>
@@ -113,25 +112,26 @@
         var db = firebase.firestore();
         let tradesRef = db.collection('gutentrades');
 
-        /*                 // set from trades.js
-                        for (t in tradesStore) {
-                            tradesRef.doc(`${tradesStore[t].id}`).set({ 
-                                name : tradesStore[t].name,
-                                id : tradesStore[t].id,
-                                quant : tradesStore[t].quant
-                            }) 
-                            .then(function () {
-                                console.log("Document successfully written!");
-                            })
-                            .catch(function (error) {
-                                console.error("Error writing document: ", error);
-                            });
-                        } */
+/*         // Set  innitial trades from trades.js
+        for (t in tradesStore) {
+            tradesRef.doc(`${tradesStore[t].id}`).set({
+                name: tradesStore[t].name,
+                id: tradesStore[t].id,
+                quant: tradesStore[t].quant
+            })
+                .then(function () {
+                    console.log("Document successfully written!");
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                });
+        } */
 
+        // Cloud listener: onSnapshot as realtime listener
         let trades
         tradesRef.where("id", "!=", true)
             .onSnapshot(function (querySnapshot) {
-                trades = [];
+                trades = [];    // resets array preventing append the updated collection
                 querySnapshot.forEach(function (doc) {
                     trades.push(doc.data());
                 });
@@ -139,7 +139,7 @@
                 newChart();
             });
 
-        function setTrade(condition) {
+        function updateTrade(condition) {
             condition == true ? trades.find(i => i.id == selection).quant += 1 : trades.find(i => i.id == selection).quant -= 1;
             let newQuant = trades.find(i => i.id == selection).quant;
             return tradesRef.doc(selection).update({
@@ -156,28 +156,7 @@
 
     <!-- Rendering -->
     <script>
-        let itemContainer = document.getElementById('itemContainer');
-        let chartlabel; let chartQuant;
-        function render() {
-            itemContainer.innerHTML = '';
-            chartlabel = []; chartQuant = [];
-            for (let e = 0; e < (trades.length /* - 4 */); e++) {
-                let item = document.createElement('div'); item.classList.add('item'); item.setAttribute('id', trades[e].id);
-                let itemName = document.createElement('div'); itemName.classList.add('itemName'); itemName.innerHTML = `${trades[e].name}`;
-                let itemQuant = document.createElement('div'); itemQuant.classList.add('itemQuant'); itemQuant.innerHTML = `${trades[e].quant}`;
-                item.appendChild(itemName); item.appendChild(itemQuant);
-                itemContainer.appendChild(item);
-                chartlabel.push(trades[e].name);
-                chartQuant.push(trades[e].quant);
-                setColor();
-                item.addEventListener('click', function () {
-                    selector(this.getAttribute('id'));
-                });
-            };
-            focus();
-            addQuantChangeStyle();
-        }
-
+        
         let selection;
         function selector(id) {
             selection = id;
@@ -194,6 +173,30 @@
 
         function addQuantChangeStyle() {
             if (selection) document.getElementById(selection).lastElementChild.classList.add('itemQuantChange');
+        }
+
+        let itemContainer = document.getElementById('itemContainer');
+        let chartlabel; 
+        let chartQuant;
+        function render() {
+            itemContainer.innerHTML = '';
+            chartlabel = []; 
+            chartQuant = [];
+            for (let e = 0; e < (trades.length /* - 4 */); e++) {
+                let item = document.createElement('div'); item.classList.add('item'); item.setAttribute('id', trades[e].id);
+                let itemName = document.createElement('div'); itemName.classList.add('itemName'); itemName.innerHTML = `${trades[e].name}`;
+                let itemQuant = document.createElement('div'); itemQuant.classList.add('itemQuant'); itemQuant.innerHTML = `${trades[e].quant}`;
+                item.appendChild(itemName); item.appendChild(itemQuant);
+                itemContainer.appendChild(item);
+                chartlabel.push(trades[e].name);
+                chartQuant.push(trades[e].quant);
+                setColor();
+                item.addEventListener('click', function () {
+                    selector(this.getAttribute('id'));
+                });
+            };
+            focus();
+            addQuantChangeStyle();
         }
     </script>
 
