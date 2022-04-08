@@ -1,0 +1,83 @@
+body {
+    background-size: cover;
+    background-blend-mode: color;
+    background-color: rgba(28, 24, 37, 0.925);
+}
+
+.item-container {
+    display: grid;
+    grid-template:
+        'a a a a a a' 100px 
+        'a a a a a a' 100px;
+    margin: 10px 15% 0px;
+}
+
+.item {
+    background-color: rgba(0, 250, 250, 0.1);
+    width: 60px;
+    margin: 10px;
+    padding: 4px;
+    border: 1px solid aqua;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.focus {
+    background-color: #40f5f56b;
+}
+
+.itemName {
+    font-size: 20px;
+    font-family: sans-serif;
+    font-variant-caps: all-petite-caps;
+    padding: .5em;
+}
+
+.itemQuant {
+    text-align: end;
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 4px;
+    font-family: sans-serif;
+}
+
+.itemQuantUpdate {
+    overflow: hidden;
+    animation: quantUpdate .5s ease-out 0s 1 normal none;
+}
+
+@keyframes quantUpdate {
+    0% {
+        background-color: black;
+    }
+}
+
+.buttonContainer {
+    text-align: center;
+}
+
+button {
+    background-color: rgba(0, 250, 250, 10%);
+    color: aqua;
+    font-size: 20px;
+    margin: .5em;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 1px solid aqua;
+    cursor: pointer;
+}
+
+button:focus {
+    outline-style: none;
+}
+
+button:active {
+    background-color: rgba(0, 250, 250, 0.747);
+}
+
+.canvas {
+    width: 100% !important;
+    height: 200px !important;
+}
