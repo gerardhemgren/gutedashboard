@@ -33,7 +33,6 @@ body {
 }
 
 .item {
-    background-color: rgba(0, 250, 250, 0.1);
     width: 60px;
     margin: 10px;
     padding: 4px;
@@ -41,10 +40,6 @@ body {
     color: white;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.focus {
-    background-color: #40f5f56b;
 }
 
 .itemName {
@@ -79,14 +74,14 @@ body {
 }
 
 button {
-    background-color: rgba(0, 250, 250, 10%);
-    color: aqua;
+    background-color: rgba(153, 153, 153, 0.329);
+    color: white;
     font-size: 20px;
     margin: .5em;
     width: 65px;
     height: 65px;
     border-radius: 50%;
-    border: 1px solid aqua;
+    border: 1px solid white;
     cursor: pointer;
 }
 
@@ -95,7 +90,7 @@ button:focus {
 }
 
 button:active {
-    background-color: rgba(0, 250, 250, 0.747);
+    background-color: rgba(216, 216, 216, 0.747);
 }
 
 .canvas-container {

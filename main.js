@@ -1,6 +1,7 @@
+import { setColor, solidColor, alphaColor } from "./randomColor.js";
+
 // DATABASE
 //
-
 var db = firebase.firestore();
 let tradesRef = db.collection('gutentrades');
 
@@ -17,11 +18,11 @@ tradesRef.where("id", "!=", true)
         newChart();
     });
 
-let tradeAddBtn = document.getElementById('trade-add-btn').addEventListener('click', () => updateTrade(true))
-let tradeSubBtn = document.getElementById('trade-sub-btn').addEventListener('click', () => updateTrade(false))
+let tradeAddBtn = document.getElementById('trade-add-btn').addEventListener('click', () => updateTrade(true));
+let tradeSubBtn = document.getElementById('trade-sub-btn').addEventListener('click', () => updateTrade(false));
 function updateTrade(condition) {
     if (selection) {
-        let tradeSelection = trades.find(i => i.id == selection)
+        let tradeSelection = trades.find(i => i.id == selection);
         condition == true ? tradeSelection.quant += 1 : tradeSelection.quant -= 1;
         return tradesRef.doc(selection).update({
             quant: tradeSelection.quant
@@ -42,15 +43,15 @@ function updateTrade(condition) {
 let selection;
 function selectItem(id) {
     selection = id;
-    focusItem()
+    focusItem();
 }
 
 function focusItem() {
-    let items = document.getElementsByClassName('item')
+    let items = document.getElementsByClassName('item');
     for (let e = 0; e < items.length; e++) {
-        items[e].classList.remove('focus');
+        items[e].style.backgroundColor = items[e].style.backgroundColor.replace(')', ', 0.5)'); // reset to alphaColor
     }
-    if (selection) document.getElementById(selection).classList.add('focus');
+    if (selection) document.getElementById(selection).style.backgroundColor = document.getElementById(selection).style.backgroundColor.replace('0.5', '1');
 }
 
 function addQuantUpdateStyle() {
@@ -65,10 +66,24 @@ function render() {
     chartLabel = [];
     chartQuant = [];
     for (let e = 0; e < (trades.length); e++) {
-        let item = document.createElement('div'); item.classList.add('item'); item.setAttribute('id', trades[e].id);
-        let itemName = document.createElement('div'); itemName.classList.add('itemName'); itemName.innerHTML = `${trades[e].name}`;
-        let itemQuant = document.createElement('div'); itemQuant.classList.add('itemQuant'); itemQuant.innerHTML = `${trades[e].quant}`;
-        item.appendChild(itemName); item.appendChild(itemQuant);
+        // COLORS FOR THE CHART
+        setColor()
+
+        let item = document.createElement('div'); item.classList.add('item'); 
+        item.setAttribute('id', trades[e].id); 
+        item.style.backgroundColor = alphaColor[e]; 
+        item.style.borderColor = solidColor[e];
+
+        let itemName = document.createElement('div'); 
+        itemName.classList.add('itemName'); 
+        itemName.innerHTML = `${trades[e].name}`;
+        
+        let itemQuant = document.createElement('div'); 
+        itemQuant.classList.add('itemQuant'); 
+        itemQuant.innerHTML = `${trades[e].quant}`;
+
+        item.appendChild(itemName); 
+        item.appendChild(itemQuant);
         itemContainer.appendChild(item);
         chartLabel.push(trades[e].name);
         chartQuant.push(trades[e].quant);
@@ -95,11 +110,10 @@ function newChart() {
                 datasets: [{
                     label: ' ',
                     data: chartQuant,
-                    backgroundColor: 'rgba(0, 250, 250, .4)',
-                    hoverBackgroundColor: 'rgba(0, 250, 250, 1)',
-                    borderColor: 'rgba(0, 250, 250, 1)',
-                    borderWidth: 1,
-                    borderRadius: 15
+                    backgroundColor: alphaColor,
+                    hoverBackgroundColor: solidColor,
+                    borderColor: solidColor,
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -108,7 +122,7 @@ function newChart() {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            fontColor: 'rgba(0, 250, 250, .7)'
+                            // fontColor: 'rgba(0, 250, 250, .7)'
                         },
                         gridLines: {
                             color: "rgba(255, 255, 255,.15)",
@@ -117,7 +131,7 @@ function newChart() {
                     }],
                     xAxes: [{
                         ticks: {
-                            fontColor: '#40f5f5'
+                            fontColor: 'white'
                         }
                     }]
                 },
@@ -148,9 +162,9 @@ function updateConfigByMutating() {
         datasets: [{
             label: ' ',
             data: chartQuant,
-            backgroundColor: 'rgba(0, 250, 250, .4)',
-            hoverBackgroundColor: 'rgba(0, 250, 250, 1)',
-            borderColor: 'rgba(0, 250, 250, 1)',
+            backgroundColor: alphaColor,
+            hoverBackgroundColor: solidColor,
+            borderColor: solidColor,
             borderWidth: 1,
         }]
     }
