@@ -49,9 +49,11 @@ function selectItem(id) {
 function focusItem() {
     let items = document.getElementsByClassName('item');
     for (let e = 0; e < items.length; e++) {
-        items[e].style.backgroundColor = items[e].style.backgroundColor.replace(')', ', 0.5)'); // reset to alphaColor
+        items[e].style.borderColor = 'transparent'
     }
-    if (selection) document.getElementById(selection).style.backgroundColor = document.getElementById(selection).style.backgroundColor.replace('0.5', '1');
+    if (selection) {
+        document.getElementById(selection).style.borderColor = 'rgba(255, 255, 255, 1)';
+    }
 }
 
 function addQuantUpdateStyle() {
@@ -69,20 +71,20 @@ function render() {
         // COLORS FOR THE CHART
         setColor()
 
-        let item = document.createElement('div'); item.classList.add('item'); 
-        item.setAttribute('id', trades[e].id); 
-        item.style.backgroundColor = alphaColor[e]; 
-        item.style.borderColor = solidColor[e];
+        let item = document.createElement('div'); item.classList.add('item');
+        item.setAttribute('id', trades[e].id);
+        item.style.backgroundColor = alphaColor[e];
+        // item.style.borderColor = solidColor[e];
 
-        let itemName = document.createElement('div'); 
-        itemName.classList.add('itemName'); 
+        let itemName = document.createElement('div');
+        itemName.classList.add('itemName');
         itemName.innerHTML = `${trades[e].name}`;
-        
-        let itemQuant = document.createElement('div'); 
-        itemQuant.classList.add('itemQuant'); 
+
+        let itemQuant = document.createElement('div');
+        itemQuant.classList.add('itemQuant');
         itemQuant.innerHTML = `${trades[e].quant}`;
 
-        item.appendChild(itemName); 
+        item.appendChild(itemName);
         item.appendChild(itemQuant);
         itemContainer.appendChild(item);
         chartLabel.push(trades[e].name);
