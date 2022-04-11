@@ -48,9 +48,9 @@ function selectItem(id) {
 function focusItem() {
     let items = document.getElementsByClassName('item')
     for (let e = 0; e < items.length; e++) {
-        items[e].classList.remove('focusItem');
+        items[e].classList.remove('focus');
     }
-    if (selection) document.getElementById(selection).classList.add('focusItem');
+    if (selection) document.getElementById(selection).classList.add('focus');
 }
 
 function addQuantUpdateStyle() {
