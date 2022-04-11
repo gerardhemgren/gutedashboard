@@ -1,26 +1,9 @@
-// import setColor from './randomColor.js'
+import { setColor, solidColor, alphaColor } from "./randomColor.js";
 
 // DATABASE
 //
-
 var db = firebase.firestore();
 let tradesRef = db.collection('gutentrades');
-
-// Set  innitial trades from trades.js
-
-/* for (t in tradesStore) {
-    tradesRef.doc(`${tradesStore[t].id}`).set({
-        name: tradesStore[t].name,
-        id: tradesStore[t].id,
-        quant: tradesStore[t].quant
-    })
-        .then(function () {
-            console.log("Document successfully written!");
-        })
-        .catch(function (error) {
-            console.error("Error writing document: ", error);
-        });
-} */
 
 // Cloud listener: onSnapshot as realtime listener
 
@@ -35,11 +18,11 @@ tradesRef.where("id", "!=", true)
         newChart();
     });
 
-let tradeAddBtn = document.getElementById('trade-add-btn').addEventListener('click', () => updateTrade(true))
-let tradeSubBtn = document.getElementById('trade-sub-btn').addEventListener('click', () => updateTrade(false))
+let tradeAddBtn = document.getElementById('trade-add-btn').addEventListener('click', () => updateTrade(true));
+let tradeSubBtn = document.getElementById('trade-sub-btn').addEventListener('click', () => updateTrade(false));
 function updateTrade(condition) {
     if (selection) {
-        let tradeSelection = trades.find(i => i.id == selection)
+        let tradeSelection = trades.find(i => i.id == selection);
         condition == true ? tradeSelection.quant += 1 : tradeSelection.quant -= 1;
         return tradesRef.doc(selection).update({
             quant: tradeSelection.quant
@@ -58,17 +41,19 @@ function updateTrade(condition) {
 //
 
 let selection;
-function selector(id) {
+function selectItem(id) {
     selection = id;
-    focus()
+    focusItem();
 }
 
-function focus() {
-    let items = document.getElementsByClassName('item')
+function focusItem() {
+    let items = document.getElementsByClassName('item');
     for (let e = 0; e < items.length; e++) {
-        items[e].classList.remove('focus');
+        items[e].style.borderColor = 'transparent'
     }
-    if (selection) document.getElementById(selection).classList.add('focus');
+    if (selection) {
+        document.getElementById(selection).style.borderColor = 'rgba(255, 255, 255, 1)';
+    }
 }
 
 function addQuantUpdateStyle() {
@@ -83,19 +68,32 @@ function render() {
     chartLabel = [];
     chartQuant = [];
     for (let e = 0; e < (trades.length); e++) {
-        let item = document.createElement('div'); item.classList.add('item'); item.setAttribute('id', trades[e].id);
-        let itemName = document.createElement('div'); itemName.classList.add('itemName'); itemName.innerHTML = `${trades[e].name}`;
-        let itemQuant = document.createElement('div'); itemQuant.classList.add('itemQuant'); itemQuant.innerHTML = `${trades[e].quant}`;
-        item.appendChild(itemName); item.appendChild(itemQuant);
+        // COLORS FOR THE CHART
+        setColor()
+
+        let item = document.createElement('div'); item.classList.add('item');
+        item.setAttribute('id', trades[e].id);
+        item.style.backgroundColor = alphaColor[e];
+        // item.style.borderColor = solidColor[e];
+
+        let itemName = document.createElement('div');
+        itemName.classList.add('itemName');
+        itemName.innerHTML = `${trades[e].name}`;
+
+        let itemQuant = document.createElement('div');
+        itemQuant.classList.add('itemQuant');
+        itemQuant.innerHTML = `${trades[e].quant}`;
+
+        item.appendChild(itemName);
+        item.appendChild(itemQuant);
         itemContainer.appendChild(item);
         chartLabel.push(trades[e].name);
         chartQuant.push(trades[e].quant);
-        // setColor();
         item.addEventListener('click', function () {
-            selector(this.getAttribute('id'));
+            selectItem(this.getAttribute('id'));
         });
     };
-    focus();
+    focusItem();
     addQuantUpdateStyle();
 }
 
@@ -114,11 +112,10 @@ function newChart() {
                 datasets: [{
                     label: ' ',
                     data: chartQuant,
-                    backgroundColor: 'rgba(0, 250, 250, .4)',
-                    hoverBackgroundColor: 'rgba(0, 250, 250, 1)',
-                    borderColor: 'rgba(0, 250, 250, 1)',
-                    borderWidth: 1,
-                    borderRadius: 15
+                    backgroundColor: alphaColor,
+                    hoverBackgroundColor: solidColor,
+                    borderColor: solidColor,
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -127,7 +124,7 @@ function newChart() {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            fontColor: 'rgba(0, 250, 250, .7)'
+                            // fontColor: 'rgba(0, 250, 250, .7)'
                         },
                         gridLines: {
                             color: "rgba(255, 255, 255,.15)",
@@ -136,7 +133,7 @@ function newChart() {
                     }],
                     xAxes: [{
                         ticks: {
-                            fontColor: '#40f5f5'
+                            fontColor: 'white'
                         }
                     }]
                 },
@@ -167,9 +164,9 @@ function updateConfigByMutating() {
         datasets: [{
             label: ' ',
             data: chartQuant,
-            backgroundColor: 'rgba(0, 250, 250, .4)',
-            hoverBackgroundColor: 'rgba(0, 250, 250, 1)',
-            borderColor: 'rgba(0, 250, 250, 1)',
+            backgroundColor: alphaColor,
+            hoverBackgroundColor: solidColor,
+            borderColor: solidColor,
             borderWidth: 1,
         }]
     }

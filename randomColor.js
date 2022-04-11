@@ -1,23 +1,19 @@
 let result;
+let solidColor = [];
+let alphaColor = [];
+
 function getRandomNumber() {
-    let random = 256;
+    let randomNum;
     do {
-        random = Math.floor(Math.random() * 1000);
-    } while (random >= 256)
-    return result = random;
+        randomNum = Math.floor(Math.random() * 1000);
+    } while (randomNum >= 200) // threshold
+    return result = parseFloat(randomNum);
 }
 
-let randomColor = [];
-let randomColorAlpha = []
 function setColor() {
-    let randomValue = [];
-    for (let i = 0; i < 3; i++) {
-        getRandomNumber();
-        randomValue.push(parseFloat(result));
-    }
-    // randomValue.push(.3);
-    randomColorAlpha.push(`rgba(${randomValue},.6)`);
-    randomColor.push(`rgb(${randomValue})`);
+    getRandomNumber();
+    alphaColor.push(`rgba(${result}, 240, 250, 0.5)`);
+    solidColor.push(`rgba(${result}, 240, 250, 0.8)`);
 }
 
-export default setColor;
+export { setColor, solidColor, alphaColor };
