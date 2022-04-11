@@ -1,26 +1,8 @@
-// import setColor from './randomColor.js'
-
 // DATABASE
 //
 
 var db = firebase.firestore();
 let tradesRef = db.collection('gutentrades');
-
-// Set  innitial trades from trades.js
-
-/* for (t in tradesStore) {
-    tradesRef.doc(`${tradesStore[t].id}`).set({
-        name: tradesStore[t].name,
-        id: tradesStore[t].id,
-        quant: tradesStore[t].quant
-    })
-        .then(function () {
-            console.log("Document successfully written!");
-        })
-        .catch(function (error) {
-            console.error("Error writing document: ", error);
-        });
-} */
 
 // Cloud listener: onSnapshot as realtime listener
 
@@ -58,17 +40,17 @@ function updateTrade(condition) {
 //
 
 let selection;
-function selector(id) {
+function selectItem(id) {
     selection = id;
-    focus()
+    focusItem()
 }
 
-function focus() {
+function focusItem() {
     let items = document.getElementsByClassName('item')
     for (let e = 0; e < items.length; e++) {
-        items[e].classList.remove('focus');
+        items[e].classList.remove('focusItem');
     }
-    if (selection) document.getElementById(selection).classList.add('focus');
+    if (selection) document.getElementById(selection).classList.add('focusItem');
 }
 
 function addQuantUpdateStyle() {
@@ -90,12 +72,11 @@ function render() {
         itemContainer.appendChild(item);
         chartLabel.push(trades[e].name);
         chartQuant.push(trades[e].quant);
-        // setColor();
         item.addEventListener('click', function () {
-            selector(this.getAttribute('id'));
+            selectItem(this.getAttribute('id'));
         });
     };
-    focus();
+    focusItem();
     addQuantUpdateStyle();
 }
 
