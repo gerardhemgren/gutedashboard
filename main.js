@@ -2,8 +2,8 @@ import { setColor, solidColor, alphaColor } from "./randomColor.js";
 
 // DATABASE
 //
-var db = firebase.firestore();
-let tradesRef = db.collection('gutentrades');
+const db = firebase.firestore();
+const tradesRef = db.collection('gutentrades');
 
 // Cloud listener: onSnapshot as realtime listener
 
@@ -18,8 +18,8 @@ tradesRef.where("id", "!=", true)
         newChart();
     });
 
-let tradeAddBtn = document.getElementById('trade-add-btn').addEventListener('click', () => updateTrade(true));
-let tradeSubBtn = document.getElementById('trade-sub-btn').addEventListener('click', () => updateTrade(false));
+const tradeAddBtn = document.getElementById('trade-add-btn').addEventListener('click', () => updateTrade(true));
+const tradeSubBtn = document.getElementById('trade-sub-btn').addEventListener('click', () => updateTrade(false));
 function updateTrade(condition) {
     if (selection) {
         let tradeSelection = trades.find(i => i.id == selection);
@@ -67,6 +67,8 @@ function render() {
     itemContainer.innerHTML = '';
     chartLabel = [];
     chartQuant = [];
+    trades.sort((a,b) => b.quant - a.quant)
+    console.log(trades)
     for (let e = 0; e < (trades.length); e++) {
         // COLORS FOR THE CHART
         setColor()
